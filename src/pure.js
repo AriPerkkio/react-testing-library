@@ -5,15 +5,18 @@ import {
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act, {asyncAct} from './act-compat'
+import * as testUtils from 'react-dom/test-utils'
+import act from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
   asyncWrapper: async cb => {
     let result
-    await asyncAct(async () => {
+    await testUtils.act(async () => {
       result = await cb()
+      //console.log('callback resolved', prettyDOM());
     })
+    //console.log('asyncWrapper resolved', prettyDOM());
     return result
   },
   eventWrapper: cb => {
